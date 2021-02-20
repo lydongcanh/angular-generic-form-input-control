@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { NgForm, Validators } from "@angular/forms";
 
 @Component({
   selector: "my-app",
@@ -7,7 +7,9 @@ import { NgForm } from "@angular/forms";
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent implements OnInit {
-  constructor() {}
+  nameValidators = [Validators.required, Validators.minLength(4)];
+  ageValidators = [Validators.pattern("^(0|[1-9][0-9]*)$")];
+  emailValidators = [Validators.required, Validators.email];
 
   ngOnInit() {}
 

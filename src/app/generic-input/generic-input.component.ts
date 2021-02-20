@@ -28,11 +28,13 @@ export class GenericInputComponent
   disabled;
 
   @Input() type = "text";
-  @Input() isRequired: boolean = false;
-  @Input() pattern: string = null;
   @Input() label: string = null;
   @Input() placeholder: string;
   @Input() errorMsg: string;
+  @Input() validatorFns: ValidatorFn[];
+
+  isRequired = () =>
+    this.validatorFns && this.validatorFns.includes(Validators.required);
 
   constructor(@Self() public controlDir: NgControl) {
     this.controlDir.valueAccessor = this;
@@ -43,12 +45,9 @@ export class GenericInputComponent
     const validators: ValidatorFn[] = control.validator
       ? [control.validator]
       : [];
-    if (this.isRequired) {
-      validators.push(Validators.required);
-    }
-    if (this.pattern) {
-      validators.push(Validators.pattern(this.pattern));
-    }
+
+    if (this.validatorFns)
+      for (const validatorFn of this.validatorFns) validators.push(validatorFn);
 
     control.setValidators(validators);
     control.updateValueAndValidity();
@@ -61,9 +60,11 @@ export class GenericInputComponent
   writeValue(obj: any): void {
     this.input.nativeElement.value = obj;
   }
+
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
+
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
@@ -73,12 +74,9 @@ export class GenericInputComponent
 
   validate(c: AbstractControl): { [key: string]: any } {
     const validators: ValidatorFn[] = [];
-    if (this.isRequired) {
-      validators.push(Validators.required);
-    }
-    if (this.pattern) {
-      validators.push(Validators.pattern(this.pattern));
-    }
+
+    if (this.validatorFns)
+      for (const validatorFn of this.validatorFns) validators.push(validatorFn);
 
     return validators;
   }
