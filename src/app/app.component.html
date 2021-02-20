@@ -1,4 +1,18 @@
-<hello name="{{ name }}"></hello>
-<p>
-  Start editing to see some magic happen :)
-</p>
+<form class="form-signin" (ngSubmit)="onSubmit(f.value)" #f="ngForm">
+	<div class="text-center mb-4">
+		<h1 class="h3 mb-3 font-weight-normal">Generic Input Form</h1>
+	</div>
+
+	<app-generic-input [placeholder]="'Full Name'" [isRequired]="true" [errorMsg]="'Please enter your name.'"
+		[label]="'Full Name'" ngModel name="name">
+	</app-generic-input>
+
+	<app-generic-input [placeholder]="'Age'" [isRequired]="true" [errorMsg]="'Please enter valid age.'" [label]="'Age'"
+		[pattern]="'^(0|[1-9][0-9]*)$'" ngModel name="age"></app-generic-input>
+
+	<app-generic-input [placeholder]="'Email'" [isRequired]="true" [errorMsg]="'Please enter a valid email address.'"
+		[label]="'User Email'" [pattern]="'[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}'" ngModel name="email">
+	</app-generic-input>
+
+	<button class="btn btn-lg btn-primary btn-block" [disabled]="!f.valid" type="submit">Sign in</button>
+</form>

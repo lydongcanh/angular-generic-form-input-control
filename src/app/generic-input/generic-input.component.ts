@@ -1,21 +1,33 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Self, Optional, forwardRef } from '@angular/core';
 import {
-  ControlValueAccessor, Validator, AbstractControl,
-  ValidatorFn, Validators, NgControl
-} from '@angular/forms';
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  ElementRef,
+  Self,
+  Optional,
+  forwardRef
+} from "@angular/core";
+import {
+  ControlValueAccessor,
+  Validator,
+  AbstractControl,
+  ValidatorFn,
+  Validators,
+  NgControl
+} from "@angular/forms";
 
 @Component({
-  selector: 'app-generic-input',
-  templateUrl: './generic-input.component.html',
-  styleUrls: ['./generic-input.component.scss'],
+  selector: "app-generic-input",
+  templateUrl: "./generic-input.component.html",
+  styleUrls: ["./generic-input.component.scss"]
 })
-
-export class GenericInputComponent implements ControlValueAccessor, Validator, OnInit {
-
-  @ViewChild('input') input: ElementRef;
+export class GenericInputComponent
+  implements ControlValueAccessor, Validator, OnInit {
+  @ViewChild("input") input: ElementRef;
   disabled;
 
-  @Input() type = 'text';
+  @Input() type = "text";
   @Input() isRequired: boolean = false;
   @Input() pattern: string = null;
   @Input() label: string = null;
@@ -28,7 +40,9 @@ export class GenericInputComponent implements ControlValueAccessor, Validator, O
 
   ngOnInit() {
     const control = this.controlDir.control;
-    const validators: ValidatorFn[] = control.validator ? [control.validator] : [];
+    const validators: ValidatorFn[] = control.validator
+      ? [control.validator]
+      : [];
     if (this.isRequired) {
       validators.push(Validators.required);
     }
@@ -40,9 +54,9 @@ export class GenericInputComponent implements ControlValueAccessor, Validator, O
     control.updateValueAndValidity();
   }
 
-  onChange(event) { }
+  onChange(event) {}
 
-  onTouched() { }
+  onTouched() {}
 
   writeValue(obj: any): void {
     this.input.nativeElement.value = obj;
@@ -57,7 +71,7 @@ export class GenericInputComponent implements ControlValueAccessor, Validator, O
     this.disabled = isDisabled;
   }
 
-  validate(c: AbstractControl): { [key: string]: any; } {
+  validate(c: AbstractControl): { [key: string]: any } {
     const validators: ValidatorFn[] = [];
     if (this.isRequired) {
       validators.push(Validators.required);
@@ -68,5 +82,4 @@ export class GenericInputComponent implements ControlValueAccessor, Validator, O
 
     return validators;
   }
-
 }
